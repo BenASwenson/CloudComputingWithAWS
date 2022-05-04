@@ -1,6 +1,7 @@
 # CloudComputingWithAWS
 
 ### AWS (Amazon Web Services) - launch a virtual machine
+- ![diagram](AWS_workflow.png?raw=true "AWS_with_ssh")
 - ensure file.pem is read-only `chmod 400 file.pem` and also located in .ssh directory 
 - visit Amazon's Global Infrastructure
   - https://aws.amazon.com/about-aws/global-infrastructure/?nc2=type_a
