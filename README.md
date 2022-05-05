@@ -60,7 +60,7 @@
       - click button `launch`
         - now we need to let AWS know that we want to launch this instance and we want to access using whichever key
           - create new key pair or select existing key pair
-            - select from dropdown menu (eng110 is using `eng119 | RSA`)
+            - select from dropdown menu (eng110 is using `eng119 | RSA`) then click `Launch Instances`
           - click button `View Instances`
   - select checkbox for instance to display its information below
     - copy Public IPv4 address
@@ -76,3 +76,65 @@
     - Install nginx: `sudo apt install nginx -y`
   - Once installed go back to 'Connect to instance' AWS page and select `EC2 Instance Connect` tab
     - copy Public IP address and paste into url bar of browser for access
+
+### Adding App files and installing NodeJS (dependencies)
+- migrate app and file.pem to cloud
+  - scp file.pem localhost/address destination/address
+    - example => scp -i ~/.ssh/eng119.pem -r ~/Downloads/sg_application ubuntu@ec2-54-75-49-179.eu-west-1.compute.amazonaws.com:~/.
+  - access denied - port 22 unavailable - enter new ip in your security group
+  - allow port 3000
+- Install NodeJS dependencies
+  - `sudo apt-get install nodejs -y`
+  - `sudo apt-get install python-software-properties -y`
+  - `curl -sL https://deb.nodesource.com/setup_12.x | sudo -E bash -`
+  - `sudo apt-get install nodejs -y`
+- go to directory of app in app ec2 instance
+  - `npm install`
+  - `npm start`
+
+### Deploying for MongoDB
+- create EC2 instance mostly the same way
+  - When adding tags, key: Name  value: eng110_bens_mongodb
+  - create a new security group
+    - name: eng110_bens_sg_db
+    - description: same
+    - first change first SSH security group Source to My IP and Description to my ip + add `/32` CIDR block to end of ip address
+    - Then `Add Rule`
+    - Type: `Custom TCP`
+    - Protocol: `TCP`
+    - Port Range: `27017`
+    - Source: `Custom` + fill in app's public ip address + add `/32` CIDR block to end of ip address
+    - Description: app ip
+- ssh into instance and continue with the following commands:
+
+  - Install nginx: `sudo apt install nginx -y` 
+  - `sudo apt-key adv --keyserver hkp://keyserver.ubuntu.com:80 --recv D68FA50FEA312927`
+  - `echo "deb https://repo.mongodb.org/apt/ubuntu xenial/mongodb-org/3.2 multiverse" | sudo tee /etc/apt/sources.list.d/mongodb-org-3.2.list`
+  - `sudo apt-get update -y`
+  - `sudo apt-get upgrade -y`
+  - `sudo apt-get install -y mongodb-org=3.2.20 mongodb-org-server=3.2.20 mongodb-org-shell=3.2.20 mongodb-org-mongos=3.2.20 mongodb-org-tools=3.2.20`
+  - `sudo systemctl status mongod`
+  - `sudo systemctl start mongod`
+  - `sudo systemctl enable mongod`
+  - `sudo apt-get update -y`
+- SSH into the app instance into the app directory
+- create environment variable for database 
+  - `sudo echo "export DB_HOST=mongodb://<db ip address>:27017/posts" >> ~/.bashrc`
+  - `source ~/.bashrc`
+  - `npm start`
+  - if it doesn't allow connection, we can do it forcefully:
+    - SSH into DB instance
+    - `cd /etc`
+    - `sudo nano mongod.conf`
+    - go down to Network Interfaces and change bindIp: `0.0.0.0`
+    - restart mongodb: `sudo systemctl restart mongod`
+    - enable mongodb: `sudo systemctl enable mongod`
+    - check status: `sudo systemctl status mongod`
+    - have a look at changes to mongod.conf: `cat mongod.conf`
+  - go to app ec2 instance in the app directory
+    - `printenv DB_HOST` which will give you DB instance IP address
+    - `node seeds/seed.js` you should get: Database cleared Database Seeded
+    - `npm start`
+
+
+
