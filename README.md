@@ -1,6 +1,6 @@
 # CloudComputingWithAWS
 
--cloud computing is the delivery of computing services—including servers, storage, databases, networking, software, analytics, and intelligence—over the Internet (“the cloud”) to offer faster innovation, flexible resources, and economies of scale
+- cloud computing is the delivery of computing services—including servers, storage, databases, networking, software, analytics, and intelligence—over the Internet (“the cloud”) to offer faster innovation, flexible resources, and economies of scale
 
 # Benefits of Cloud Computing:
 -	Security – monitored 24/7 to ensure confidentiality, integrity and availability of data.  All flowing data across the AWS global network automatically encrypted at the physical layer 
@@ -12,7 +12,7 @@
 
 
 ### AWS (Amazon Web Services) - launch a virtual machine
-- ![diagram](AWS_workflow.png?raw=true "AWS_with_ssh")
+![diagram](AWS_workflow.png?raw=true "AWS_with_ssh")
 - ensure file.pem is read-only `chmod 400 file.pem` and also located in .ssh directory 
 - visit Amazon's Global Infrastructure
   - https://aws.amazon.com/about-aws/global-infrastructure/?nc2=type_a
