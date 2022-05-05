@@ -10,6 +10,11 @@
 -	Scalability – conceptually infinite scalability of the cloud.  No longer need to over provision to ensure you have enough capacity to handle business operations at the peak level of activity.  You can provision the amount of resources 
 -	Flexibility - choosing how and where you want to run your workloads, and when you do you are using the same network, control plane, API's, and AWS services.  If you would like to run your applications globally you can choose from any of the AWS Regions and AZs. If you need to run your applications with single-digit millisecond latencies to mobile devices and end-users you can choose AWS Local Zones or AWS Wavelength. Or if you'd like to run your applications on-premises you can choose AWS Outposts.
 
+# 3 Types of Cloud Computing
+- Private Cloud (OnPrem): This model consists of an infrastructure that is owned by a single business. This model can be hosted in-house or can be externally hosted. Although expensive, the private cloud model is well suited for large organizations with a focus on security, customizability, and computing power.
+- Public Cloud: This model consists of services and infrastructure that are shared by all organizations. With huge available space, scalability becomes easier in public cloud solutions. Organizations pay public cloud models on a pay-per-use basis, making it a suitable solution for smaller businesses looking out to save money.
+- Hybrid Cloud: A combination of both public and private clouds, a hybrid cloud combines the two models to create a tailored solution that allows both platforms to interact seamlessly.
+
 
 ### AWS (Amazon Web Services) - launch a virtual machine
 ![diagram](AWS_workflow.png?raw=true "AWS_with_ssh")
