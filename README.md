@@ -136,5 +136,22 @@
     - `node seeds/seed.js` you should get: Database cleared Database Seeded
     - `npm start`
 
+### Amazon Machine Images (AMI)
+![diagram](AmazonMachineImages.png?raw=true "Amazon Machine Images")
+- supported and maintained image provided by AWS that provides the info required to launch an instance.
+  - An AMI includes the following:
+    - One or more Amazon Elastic Block Store (Amazon EBS) snapshots, or, for instance-store-backed AMIs, a template for the root volume of the instance(for example, an OS, an app server, and apps)
+    - Launch permissions that control which AWS accounts can use the AMI to launch instances
+    - A block device mapping that specifies the volumes to attach to the instance when it's launched
+  
+# Benefits of AMIs
+  -	Rely on pre-configured templates that allow you to deploy one or more instances
+  -	Quickly and efficiently determine what computing power, memory, storage, and other factors you need for your apps
+  -	Low cost (it’s a virtual machine that runs in the cloud, and you can deploy and configure each one according to your business needs) no up-front costs as you might expect
+  -	Speeds up configuration and deployment because the templates are well-known and defined for typical computing infrastructure needs.  The alternative is more complex where developers would have to define the parameters they need on their own data center servers or architect the virtual servers and settings on their own.  
+  -	Flexibility – it can run Linux, Unix, Windows and you can augment the AMI with additional services (compressed, encrypted and secured no matter which OS)
+  -	Most advantages same as using EC2 itself (pre-configured templates, pay-as-you-go cost structure, speed of deployment) + ability to scale and experiment with new features of an app or by releasing additional apps without worrying about the infrastructure itself.
+
+
 
 
