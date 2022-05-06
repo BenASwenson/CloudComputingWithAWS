@@ -80,7 +80,7 @@
 ### Adding App files and installing NodeJS (dependencies)
 - migrate app and file.pem to cloud
   - scp file.pem localhost/address destination/address
-    - example => scp -i ~/.ssh/eng119.pem -r ~/Downloads/sg_application ubuntu@ec2-54-75-49-179.eu-west-1.compute.amazonaws.com:~/.
+    - example => `scp -i ~/.ssh/eng119.pem -r ~/Downloads/sg_application ubuntu@ec2-54-75-49-179.eu-west-1.compute.amazonaws.com:~/`.
   - access denied - port 22 unavailable - enter new ip in your security group
   - allow port 3000
 - Install NodeJS dependencies
