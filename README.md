@@ -91,6 +91,19 @@
 - go to directory of app in app ec2 instance
   - `npm install`
   - `npm start`
+- configure reverse proxy - app to work without port 3000
+  - We have to redirect the incoming requests of localhost to our NodeJS application running on localhost:3000 
+    - `sudo nano /etc/nginx/sites-available/default`
+    - In the file, replace the contents of "location /" block to following:
+      location / {
+        proxy_pass http://localhost:3000;
+        proxy_http_version 1.1;
+        proxy_set_header Upgrade $http_upgrade;
+        proxy_set_header Connection 'upgrade';
+        proxy_set_header Host $host;
+        proxy_cache_bypass $http_upgrade;
+      }
+    - restart Nginx server `sudo service nginx restart` 
 
 ### Deploying for MongoDB
 - create EC2 instance mostly the same way
@@ -151,6 +164,36 @@
   -	Speeds up configuration and deployment because the templates are well-known and defined for typical computing infrastructure needs.  The alternative is more complex where developers would have to define the parameters they need on their own data center servers or architect the virtual servers and settings on their own.  
   -	Flexibility – it can run Linux, Unix, Windows and you can augment the AMI with additional services (compressed, encrypted and secured no matter which OS)
   -	Most advantages same as using EC2 itself (pre-configured templates, pay-as-you-go cost structure, speed of deployment) + ability to scale and experiment with new features of an app or by releasing additional apps without worrying about the infrastructure itself.
+
+  # Setting up AMI
+  - In AWS services check to see you're in the right region (Ireland in our case)
+  - ssh into ec2 app to ensure it's running ok
+  - In AWS console select ec2 app instance within 'Actions' dropdown menu select `Image and templates` `Create image`
+  - Image name: `eng110_benswen_app_ami`
+  - Description: `eng110_benswen_app_ami_06/05/2022`
+  - `Add tag` => key `Name` => Value `eng110_benswen_app_ami` 
+  - `Create Image`
+  - on the left of the console under Images select `AMIs New`
+  - In the search bar above search for your built AMI and select it
+  - `Launch Instance from AMI`
+  - The rest of the steps are the same as when we launched an instance from Linux
+    - Instance type: `t2.micro`
+    - Configure Instance Details:
+      - Network: vpc (default)
+      - Subnet: DevOpsStudent default 1a
+      - Auto-assign Public IP: `Enable`
+    - Add volume: can stay as default
+    - Add Tags: `key => Name value => eng110_benswen_app_from_ami`
+    - Configure Security Group:
+      - select existing app security group
+    - Review Instance Launch:
+      - `Launch`
+      - select existing key pair
+    - click instance link
+    - ssh into this instance (change 'root' to 'ubuntu')
+    - check nginx is running `sudo systemctl status nginx`
+    - navigate to the app folder
+    - `npm start`
 
 
 
