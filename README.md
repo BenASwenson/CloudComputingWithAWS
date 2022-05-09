@@ -196,9 +196,30 @@
     - `npm start`
 
 
-### Amazon E3
+### Amazon S3
 ![diagram](AWS_S3.png?raw=true "Amazon S3")
 - Amazon Simple Storage Service (Amazon S3) is an object storage service that offers industry-leading scalability, data availability, security, and performance.  You can store and protect any amount of data for a range of use cases, such as data lakes, websites, mobile applications, backup and restore, archive, enterprise applications, IoT devices, and big data analytics.
+- Install Python
+  - `Python --version`
+  - `sudo apt install python`
+  - `sudo apt install python-pip -y`
+  - `alias python=python3`
+  - `sudo python -m pip install awscli`
+- Configure AWS
+  - `aws configure`
+    - 1 aws_access_key:
+    - 2 aws_secret_key:
+    - 3 format: json
+    - 4 regions: eu-west-1
+    - `aws s3 ls`
+- create bucket in S3
+  - `aws s3 mb s3://eng110-ben`
+- create text document in ec2 instance
+  - `sudo nano test.txt`
+- upload file from ec2 to s3
+  - `aws s3 cp test.txt s3://eng110-ben/`
+- download file from s3 to ec2
+  - `aws s3 cp s3://eng110-ben/test.txt test.txt`
 
 
 
