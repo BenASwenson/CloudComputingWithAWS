@@ -205,6 +205,7 @@
   - `sudo apt install python-pip -y`
   - `alias python=python3`
   - `sudo python -m pip install awscli`
+  - `sudo python3 -m pip install boto3`
 - Configure AWS
   - `aws configure`
     - 1 aws_access_key:
@@ -220,6 +221,11 @@
   - `aws s3 cp test.txt s3://eng110-ben/`
 - download file from s3 to ec2
   - `aws s3 cp s3://eng110-ben/test.txt test.txt`
+- remove file
+  - `aws s3 rm s3://eng110-ben/test.txt`
+- remove bucket
+  - `aws s3 rb s3://eng110-ben`
+
 
 
 
