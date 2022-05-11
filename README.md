@@ -408,4 +408,11 @@
   - Go through usual process
     - in networking select your VPC
   - Connect to EC2
+  - 
 
+## Stateless vs Stateful
+  - Stateful services keep track of sessions or transactions and react differently to the same inputs based on that history. 
+    - Stateful: Store additional information server-side, recording the state of the current transaction and waiting for the next instructions.
+  - Stateless services rely on clients to maintain sessions and center around operations that manipulate resources, rather than the state.
+    - Stateless: Store additional information client-side, passing along additional information with each step reminding  the server of the previous steps.  In practice, this is usually implemented using cookies or localStorage.
+ 
