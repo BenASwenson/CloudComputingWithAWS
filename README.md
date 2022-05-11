@@ -227,5 +227,185 @@
   - `aws s3 rb s3://eng110-ben`
 
 
+### AWS Autoscaling group
+![diagram](autoScaling.png?raw=true "AWS Autoscaling")
+- Contains a collection of Amazon EC2 instances that are treated as a logical grouping for the purposes of automatic scaling and management. Both maintaining the number of instances in an Auto Scaling group and automatic scaling are the core functionality of the Amazon EC2 Auto Scaling service.  the Auto Scaling group adjusts the desired capacity of the group, between the minimum and maximum capacity values that you specify, and launches or terminates the instances as needed.
+# Benefits
+  - Better fault tolerance.  Amazon EC2 auto Scaling can detect when an instance is unhealthy, terminate it, and launch an instance to replace it. You can also configure Amazon EC2 Auto Scaling to use multiple Availability Zones. If one Availability Zone becomes unavailable, Amazon EC2 Auto Scaling can launch instances in another one to compensate
+  - Better availability. Amazon EC2 Auto Scaling helps ensure that your application always has the right amount of capacity to handle the current traffic demand
+  - Better cost management. Amazon EC2 Auto Scaling can dynamically increase and decrease capacity as needed. Because you pay for the EC2 instances you use, you save money by launching instances when they are needed and terminating them when they aren't
+# Load balancing
+  - the process of distributing network traffic across multiple servers. This ensures no single server bears too much demand. By spreading the work evenly, load balancing improves application responsiveness. It also increases availability of applications and websites for users.
+# Listener groups
+  - Before you start using your Application Load Balancer, you must add one or more listeners. A listener is a process that checks for connection requests, using the protocol and port that you configure. The rules that you define for a listener determine how the load balancer routes requests to its registered targets.
+# Launch Template for ASG
+  - When you create an Auto Scaling group, you must specify the necessary information to configure the Amazon EC2 instances, the Availability Zones and VPC subnets for the instances, the desired capacity, and the minimum and maximum capacity limits.
+  - o	To configure Amazon EC2 instances that are launched by your Auto Scaling group, you can specify a launch template or a launch configuration. 
+# Launch Configuration vs Launch Template
+  - Launch configuration is an instance configuration template that an Auto Scaling group uses to launch EC2 instances.  When you create a launch configuration, you specify information for the instances.  You can only specify one launch configuration for an Auto Scaling group at a time, and you can’t modify a launch configuration after you’ve created it.  Launch templates instead allow you to have multiple versions of a template
+# Autoscaling policy options
+  - With step scaling and simple scaling, you choose scaling metrics and threshold values for the CloudWatch alarms that invoke the scaling process. You also define how your Auto Scaling group should be scaled when a threshold is in breach for a specified number of evaluation periods
 
+## Create launch template
+  - open Amazon EC2 console
+  - On navigation pane, under Instances, choose `Launch Templates`
+  - Choose `Create launch template`
+  - Name, description
+  - check box 'provide guidance to help..'
+  - add tag => name, value
+  - browse AMI - click free tier, select ubuntu 18.04
+  - Instance type - t2.micro
+  - key pair - eng119
+  - select existing security group
+  - user data - script
+    - #!/bin/bash
+    - sudo apt-get update -y
+    - sudo apt-get upgrade -y
+    - sudo apt-get install nginx -y
+    - sudo systemctl restart nginx -y
+    - sudo systemctl enable nginx -y
+
+## Create auto scaling group
+  - sign into AWS management console
+  - choose template
+  - next
+  - choose eu-west-1a, 1b, 1c
+  - next
+  - new load balancer
+  - internet-facing
+  - default routing - create target group
+  - next
+  - autoscaling: desired cap-2, min cap-2, max cap-3
+  - target tracking scaling policy
+  - next
+  - next
+  - add tags: Name, eng110-bens-asg-resources
+  - next
+  - create auto scaling group
+
+## Monitoring
+
+# create an SNS topic
+  - open the Amazon SNS console 
+  - On the Amazon SNS dashboard, under 'Common actions', choose `Create Topic`
+  - choose `Standard`
+  - in the 'Create new topic' dialog box, for 'Topic name', enter a name for the topic
+  - Choose `Create Topic`
+  - copy the 'Topic ARN' for the next task
+# subscribe to an SNS topic
+  - In the navigation pane, choose `Subscriptions, Create subscription`
+  - In the 'Create subscription' dialog box, for 'Topic ARN', paste the topic ARN that you created in the previous task
+  - for 'Protocol', choose `Email`
+  - for 'Endpoint', enter an email address, then choose `Create subscription`
+  - from your email application, open the message from AWS and confirm your subscription
+# Set Cloudwatch alarms for Amazon SNS metrics
+  - sign in to AWS Management Console and open the CloudWatch console
+  - choose `Alarms`, then choose the `Create Alarm` button.  This launches the 'Create Alarm' wizard
+  - be sure you're in the right region
+  - scroll through the Amazon SNS metrics to locate the metric you want to place an alarm on.  Under Metrics choose `EC2` and `by auto scaling group` Select your choice and `Continue`
+  - Fill in the Name, Description, Threshold, and Time values for the metric, and then choose `Continue`
+  - Configure actions
+    - select SNS topic
+    - auto scaling action
+  - Choose `Alarm` as the alarm state.
+  - choose existing Amazon SNS topic or create new one
+  - choose `Continue`
+  - `Create Alarm`
+
+### AWS Networking - VPC Architecture
+![diagram](External_network.png?raw=true "AWS Networking - VPC Architecture")
+- Amazon Virtual Private Cloud (Amazon VPC) enables you to launch AWS resources into a virtual network that you've defined. This virtual network closely resembles a traditional network that you'd operate in your own data center, with the benefits of using the scalable infrastructure of AWS
+
+
+# What is a subnet?
+![diagram](subnet-mask.png?raw=true "subnet-mask")
+  - A subnet is a range of IP addresses in your VPC. You can launch AWS resources into a specified subnet. Use a public subnet for resources that must be connected to the internet, and a private subnet for resources that won't be connected to the internet.
+
+
+# What is a CIDR block?
+![diagram](cidr.png?raw=true "CIDR block")
+  - CIDR blocks are groups of addresses that share the same prefix and contain the same number of bits.
+  - CIDR, which stands for Classless Inter-Domain Routing, is an IP addressing scheme that improves the allocation of IP addresses. It replaces the old system based on classes A, B, and C. This scheme also helped greatly extend the life of IPv4 as well as slow the growth of routing tables.
+  - CIDR IP addresses are composed of two sets of numbers. The network address is written as a prefix, like you would see a normal IP address (e.g. 192.255.255.255). The second part is the suffix which indicates how many bits are in the entire address (e.g. /12).
+
+# Sub-mask
+![diagram](tabel-CIDR.png?raw=true "sub-mask")
+  - Every device has an IP address with two pieces: the client or host address and the server or network address. IP addresses are either configured by a DHCP server or manually configured (static IP addresses). The subnet mask splits the IP address into the host and network addresses, thereby defining which part of the IP address belongs to the device and which part belongs to the network.
+  - A subnet mask is a 32-bit number created by setting host bits to all 0s and setting network bits to all 1s. In this way, the subnet mask separates the IP address into the network and host addresses.
+  - The “255” address is always assigned to a broadcast address, and the “0” address is always assigned to a network address. Neither can be assigned to hosts, as they are reserved for these special purposes.
+
+# IP-networking
+  - An IP network is a communication network that uses Internet Protocol (IP) to send and receive messages between one or more computers. As one of the most commonly used global networks, an IP network is implemented in Internet networks, local area networks (LAN) and enterprise networks.
+  - A private IP network allows data to be shared between connected devices securely, by enforcing password protected connectivity that allows only those devices in your office or home to access the IP network.
+
+# Internet gateway
+![diagram](internetGateway.png?raw=true "internet gateway")
+  - An internet gateway is a horizontally scaled, redundant, and highly available VPC component that allows communication between your VPC and the internet. An internet gateway enables resources (like EC2 instances) in your public subnets to connect to the internet if the resource has a public IPv4 address or an IPv6 address.
+  - Similarly, resources on the internet can initiate a connection to resources in your subnet using the public IPv4 address or IPv6 address. For example, an internet gateway enables you to connect to an EC2 instance in AWS using your local computer.
+  - An internet gateway serves two purposes: to provide a target in your VPC route tables for internet-routable traffic, and to perform network address translation (NAT) for instances that have been assigned public IPv4 addresses.
+
+# Routing table
+![diagram](routingtable.svg?raw=true "routing table")
+  - traffic light
+  - A routing table contains the information necessary to forward a packet along the best path toward its destination. Each packet contains information about its origin and destination. Routing Table provides the device with instructions for sending the packet to the next hop on its route across the network.
+
+# NACL (Network Access Control List)
+![diagram](NACL.jpg?raw=true "Network Access Control List")
+  - an added layer of security for your VPC that acts as a firewall for controlling traffic in and out of one or more subnets. You might set up network ACLs with rules similar to your security groups in order to add an additional layer of security to your VPC.
+  - Security groups are tied to an instance whereas Network ACLs are tied to the subnet.
+  - Security groups are stateful. This means any changes applied to an incoming rule will be automatically applied to the outgoing rule. e.g. If you allow an incoming port 80, the outgoing port 80 will be automatically opened.
+  - Network ACLs are stateless. This means any changes applied to an incoming rule will not be applied to the outgoing rule. e.g. If you allow an incoming port 80, you would also need to apply the rule for outgoing traffic.
+
+## Setting up a VPC
+# Create VPC
+  - Search for and select VPC
+  - On the left hand side select 'Your VPCs'
+  - Select the 'Create VPC' button
+  - Select the 'VPC Only' option
+  - Name/tags as per the naming convention
+  - In IPv4 CIDR define the value as '10.0.0.0/16'
+  - No IPv6
+  - Set 'Tenancy' to default
+  - Select 'Create VPC' - isolated space in Ireland - empty, the address has been validated
+
+# Create Internet gateway
+  - from the VCP dashboard
+  - select 'Internet gateway' on the left hand side
+  - select 'Create internet gateway'
+  - Name/tags as per the naming convention
+  - select 'Create internet gateway'
+
+# Attach IG to VPC
+  - From Internet gateway select your IG
+  - From 'Actions' select 'attach to VPC'
+  - Select your VPC
+  - Select 'Attach internet gateway'
+
+# Create subnet
+  - Select 'Subnet' on left hand side
+  - Select 'Create subnet'
+  - Select your VPC
+  - Name/tags as per the naming convention
+  - Preference - no preference
+  - In IPv4 CIDR define the value as '10.0.2.0/24'
+
+# Create route table with subnet
+  - From your Route select 'Routes' tab
+  - Select 'Edit routes'
+  - Select 'Add route'
+    - Select 'Internet gateway' from dropdown list
+    - define the value with '0.0.0.0/0' => Public use
+  - Select 'Save changes'
+  - Select the 'Subnet associations' tab
+  - Select 'Edit subnet associations'
+  - Select your subnet
+  - Select 'Save association'
+
+# Testing VPC
+  - EC2 Dashboard > AMIs
+  - Select your AMI
+  - Launch instance from AMI
+  - Go through usual process
+    - in networking select your VPC
+  - Connect to EC2
 
