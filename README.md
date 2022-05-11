@@ -380,15 +380,25 @@
   - Select your VPC
   - Select 'Attach internet gateway'
 
-# Create subnet
+# Create public subnet
   - Select 'Subnet' on left hand side
   - Select 'Create subnet'
   - Select your VPC
-  - Name/tags as per the naming convention
+  - Name/tags as per the naming convention - 'public'
   - Preference - no preference
   - In IPv4 CIDR define the value as '10.0.2.0/24'
 
-# Create route table with subnet
+# Create private subnet
+  - Select 'Subnet' on left hand side
+  - Select 'Create subnet'
+  - Select your VPC
+  - Name/tags as per the naming convention - 'private'
+  - Preference - no preference
+  - In IPv4 CIDR define the value as '10.0.128.0/24'
+
+# Create route tables
+  - create public and private route tables
+  - select public route table
   - From your Route select 'Routes' tab
   - Select 'Edit routes'
   - Select 'Add route'
@@ -397,17 +407,34 @@
   - Select 'Save changes'
   - Select the 'Subnet associations' tab
   - Select 'Edit subnet associations'
-  - Select your subnet
+  - Select public subnet
   - Select 'Save association'
+  - select private route table
+  - select 'Subnet associations' tab
+  - select private subnet
+  - select 'Save associations'
 
-# Testing VPC
+# Create security group
+  - follow previously stated rules or select existing group
+
+# Create network ACL
+  - choose 'Network ACLs' on the left hand side
+  - there is a default ACL created which can be re-named
+  - choose 'Inbound Rules' tab
+  - select 'edit inbound rules'
+  - under Source place in your ip address
+  - select 'Save'
+
+# Launch instances in subnets
   - EC2 Dashboard > AMIs
-  - Select your AMI
-  - Launch instance from AMI
+  - Select your public AMI and launch instance from AMI or create public instance AMI
   - Go through usual process
-    - in networking select your VPC
+    - in 'Network' select your VPC
+    - choose the public security group
   - Connect to EC2
-  - 
+  - Launch instances
+  - Select your private AMI and launch instance from AMI or create private instance AMI
+  - Go through usual process
 
 ## Stateless vs Stateful
 ![diagram](statelessVSstateful.png?raw=true "Stateless vs Stateful")
