@@ -313,12 +313,12 @@
   - `Create Alarm`
 
 ### AWS Networking - VPC Architecture
-![diagram](External_network.png?raw=true "AWS Networking - VPC Architecture")
+![diagram](subnetsInVPC.png?raw=true "CIDR block")
 - Amazon Virtual Private Cloud (Amazon VPC) enables you to launch AWS resources into a virtual network that you've defined. This virtual network closely resembles a traditional network that you'd operate in your own data center, with the benefits of using the scalable infrastructure of AWS
 
 
 # What is a subnet?
-![diagram](subnet-mask.png?raw=true "subnet-mask")
+
   - A subnet is a range of IP addresses in your VPC. You can launch AWS resources into a specified subnet. Use a public subnet for resources that must be connected to the internet, and a private subnet for resources that won't be connected to the internet.
 
 
