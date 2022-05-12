@@ -78,7 +78,7 @@
     - copy Public IP address and paste into url bar of browser for access
 
 ### Adding App files and installing NodeJS (dependencies)
-- migrate app and file.pem to cloud
+- migrate app to cloud
   - scp file.pem localhost/address destination/address
     - example => `scp -i ~/.ssh/eng119.pem -r ~/Downloads/sg_application ubuntu@ec2-54-75-49-179.eu-west-1.compute.amazonaws.com:~/`.
   - access denied - port 22 unavailable - enter new ip in your security group
@@ -397,7 +397,8 @@
   - In IPv4 CIDR define the value as '10.0.128.0/24'
 
 # Create route tables
-  - create public and private route tables
+  - private route table has already automatically been created and is configured for private access
+  - create public route table
   - select public route table
   - From your Route select 'Routes' tab
   - Select 'Edit routes'
@@ -409,10 +410,6 @@
   - Select 'Edit subnet associations'
   - Select public subnet
   - Select 'Save association'
-  - select private route table
-  - select 'Subnet associations' tab
-  - select private subnet
-  - select 'Save associations'
 
 # Create security group
   - follow previously stated rules or select existing group
